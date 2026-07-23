@@ -613,3 +613,16 @@ nav small{background:var(--mint);color:var(--green);padding:1px 5px;border-radiu
   .captcha-refresh{width:76px;min-width:76px}
 }
 
+.site-footer {
+  width: 100%;
+  padding: 24px 16px calc(20px + env(safe-area-inset-bottom));
+  color: #8a9690;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.auth-card .site-footer {
+  padding: 22px 0 0;
+  font-size: 11px;
+}
