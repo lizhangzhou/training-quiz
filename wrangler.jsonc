@@ -13,7 +13,7 @@
     {
       "binding": "DB",
       "database_name": "training-quiz-db",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "4e72f2a0-49e8-4491-af35-083499dc1e26",
       "migrations_dir": "./migrations"
     }
   ]
