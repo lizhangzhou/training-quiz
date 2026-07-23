@@ -1,0 +1,33 @@
+{
+  "name": "training-quiz-cloudflare",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "npm run build && wrangler dev --local",
+    "dev:frontend": "vite",
+    "typecheck": "tsc --noEmit",
+    "build": "vite build",
+    "preview": "vite preview",
+    "db:migrate:local": "wrangler d1 migrations apply training-quiz-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply training-quiz-db --remote",
+    "deploy": "npm run build && npm run db:migrate:remote && wrangler deploy",
+    "validate:questions": "node scripts/validate-questions.mjs"
+  },
+  "dependencies": {
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260717.1",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "typescript": "5.9.3",
+    "vite": "8.1.5",
+    "wrangler": "^4.112.0"
+  }
+}
