@@ -68,7 +68,26 @@ nav small{background:var(--mint);color:var(--green);padding:1px 5px;border-radiu
 .auth-loading i{display:block;width:110px;height:4px;margin:20px auto 0;border-radius:4px;background:linear-gradient(90deg,var(--mint),var(--green),var(--mint));background-size:200% 100%;animation:loading 1.2s linear infinite}
 @keyframes loading{to{background-position:-200% 0}}
 .dashboard{padding:34px 0 28px}
-.welcome{display:flex;align-items:end;justify-content:space-between;margin-bottom:22px}
+.home-overview{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:20px;align-items:stretch;margin-bottom:22px}
+.welcome{display:flex;align-items:end;justify-content:space-between;margin-bottom:0;padding:8px 0;min-width:0}
+.exam-countdown-card{background:linear-gradient(145deg,#f6fffb 0,#edf9f4 52%,#fff9ee 100%);border:1px solid #cde6da;border-radius:14px;padding:18px 20px;box-shadow:0 8px 25px rgba(23,35,29,.07);display:grid;gap:12px;min-width:0}
+.exam-countdown-head{display:flex;align-items:center;gap:13px}
+.exam-countdown-icon{width:48px;height:48px;flex:0 0 48px;border-radius:50%;display:grid;place-items:center;background:#fff2d9;color:var(--amber);font-size:23px;box-shadow:inset 0 0 0 1px #f4d69e}
+.exam-countdown-head small{display:block;color:var(--muted);font-size:11px;letter-spacing:.12em;margin-bottom:2px}
+.exam-countdown-head h2{font-size:18px;line-height:1.25;margin:0;color:var(--deep)}
+.exam-countdown-head p{font-size:14px;font-weight:700;color:var(--amber);margin:3px 0 0}
+.local-clock{display:grid;gap:3px;border:1px solid rgba(0,154,98,.15);background:rgba(255,255,255,.82);border-radius:9px;padding:9px 11px}
+.local-clock span{font-size:10px;color:var(--muted)}
+.local-clock strong{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.countdown-label{margin:0!important;color:var(--muted)!important;font-size:11px!important}
+.countdown-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.countdown-grid>div{min-width:0;background:linear-gradient(145deg,var(--deep),#005c3c);border-radius:9px;padding:9px 4px 7px;text-align:center;color:white;box-shadow:0 4px 10px rgba(0,122,77,.14)}
+.countdown-grid strong{display:block;font-size:21px;line-height:1;font-variant-numeric:tabular-nums}
+.countdown-grid span{display:block;margin-top:5px;font-size:9px;color:rgba(255,255,255,.78)}
+.exam-started{min-height:67px;border-radius:10px;background:linear-gradient(135deg,#0aa86e,var(--deep));color:white;display:grid;place-content:center;text-align:center;gap:5px;padding:10px}
+.exam-started b{font-size:18px}
+.exam-started span{font-size:11px;color:rgba(255,255,255,.84)}
+.exam-started.exam-ended{background:linear-gradient(135deg,#7b8781,#59645f)}
 .eyebrow{font-size:11px!important;letter-spacing:.2em;color:var(--green)!important;font-weight:700}
 .welcome h1,.records-head h1{font-size:30px;margin:4px 0 6px;letter-spacing:.02em}
 .welcome p,.records-head p{margin:0;color:var(--muted)}
@@ -353,6 +372,7 @@ nav small{background:var(--mint);color:var(--green);padding:1px 5px;border-radiu
 @media(max-width:900px){.topbar{gap:24px}
 .topbar nav{gap:22px}
 .user-panel>span{display:none}
+.home-overview{grid-template-columns:1fr 380px}
 .stats-grid{grid-template-columns:repeat(2,1fr)}
 .mode-grid{grid-template-columns:repeat(2,1fr)}
 .filters{grid-template-columns:1fr}
@@ -381,7 +401,13 @@ nav small{background:var(--mint);color:var(--green);padding:1px 5px;border-radiu
 .topbar nav button.active:after{bottom:4px;left:2px;right:2px}
 .page{width:min(100% - 24px,1180px)}
 .dashboard{padding-top:20px}
-.welcome{align-items:start}
+.home-overview{grid-template-columns:1fr;gap:14px;margin-bottom:18px}
+.welcome{align-items:start;padding:0;margin-bottom:0}
+.exam-countdown-card{padding:16px}
+.exam-countdown-head h2{font-size:17px}
+.local-clock strong{font-size:12px}
+.countdown-grid{gap:6px}
+.countdown-grid strong{font-size:20px}
 .welcome h1{font-size:25px}
 .personal-greeting{align-items:flex-start;gap:7px}
 .personal-greeting button{white-space:nowrap;margin-top:2px}

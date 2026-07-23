@@ -177,6 +177,81 @@ function Icon({ children, tone = "green" }: { children: React.ReactNode; tone?: 
   return <span className={`icon icon-${tone}`}>{children}</span>;
 }
 
+const EXAM_START_TIME = Date.parse("2026-07-29T14:30:00+08:00");
+const EXAM_END_TIME = Date.parse("2026-07-29T16:00:00+08:00");
+
+function getCountdownParts(milliseconds: number) {
+  const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+  return {
+    days: Math.floor(totalSeconds / 86400),
+    hours: Math.floor(totalSeconds % 86400 / 3600),
+    minutes: Math.floor(totalSeconds % 3600 / 60),
+    seconds: totalSeconds % 60,
+  };
+}
+
+function formatBeijingTime(timestamp: number) {
+  return new Intl.DateTimeFormat("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).format(new Date(timestamp));
+}
+
+function ExamCountdownCard() {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const updateClock = () => setNow(Date.now());
+    updateClock();
+    const timer = window.setInterval(updateClock, 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const beforeExam = now < EXAM_START_TIME;
+  const examInProgress = now >= EXAM_START_TIME && now < EXAM_END_TIME;
+  const countdown = getCountdownParts(EXAM_START_TIME - now);
+  const timeUnits = [
+    { label: "天", value: String(countdown.days) },
+    { label: "时", value: String(countdown.hours).padStart(2, "0") },
+    { label: "分", value: String(countdown.minutes).padStart(2, "0") },
+    { label: "秒", value: String(countdown.seconds).padStart(2, "0") },
+  ];
+
+  return <section className="exam-countdown-card" aria-label="考试时间与倒计时">
+    <div className="exam-countdown-head">
+      <span className="exam-countdown-icon">⌛</span>
+      <div>
+        <small>考试时间</small>
+        <h2>7月29日 星期三</h2>
+        <p>14:30–16:00</p>
+      </div>
+    </div>
+    <div className="local-clock">
+      <span>当前北京时间</span>
+      <strong>{formatBeijingTime(now)}</strong>
+    </div>
+    {beforeExam ? <>
+      <p className="countdown-label">距离考试还有</p>
+      <div className="countdown-grid">
+        {timeUnits.map(unit => <div key={unit.label}><strong>{unit.value}</strong><span>{unit.label}</span></div>)}
+      </div>
+    </> : examInProgress ? <div className="exam-started">
+      <b>考试进行中</b>
+      <span>考试将于今天 16:00 结束</span>
+    </div> : <div className="exam-started exam-ended">
+      <b>考试已结束</b>
+      <span>考试时间：7月29日 14:30–16:00</span>
+    </div>}
+  </section>;
+}
+
 export default function Home() {
   const [view, setView] = useState<View>("home");
   const [stats, setStats] = useState<Stats>(emptyStats);
@@ -687,7 +762,10 @@ export default function Home() {
     </header>
 
     {view === "home" && <main className="dashboard page">
-      <section className="welcome"><div><p className="eyebrow">STATE GRID · 培训学习</p><div className="personal-greeting"><h1>{greeting}，{nickname}</h1><button onClick={() => { setNicknameDraft(nickname === "同学" ? "" : nickname); setEditingNickname(true); }}>✎ 修改称呼</button></div><p>系统学习，把每一道题都变成底气</p>{editingNickname && <div className="nickname-editor"><label htmlFor="nickname">希望怎么称呼你？</label><div><input id="nickname" autoFocus maxLength={12} value={nicknameDraft} placeholder="例如：李四、同学" onChange={e => setNicknameDraft(e.target.value)} onKeyDown={e => { if (e.key === "Enter") saveNickname(); if (e.key === "Escape") setEditingNickname(false); }} /><button className="primary" onClick={saveNickname}>保存</button><button className="resume-secondary" onClick={() => setEditingNickname(false)}>取消</button></div></div>}</div><div className="streak"><span>▣</span> 连续学习 <strong>{streak}</strong> 天</div></section>
+      <section className="home-overview">
+        <section className="welcome"><div><p className="eyebrow">STATE GRID · 培训学习</p><div className="personal-greeting"><h1>{greeting}，{nickname}</h1><button onClick={() => { setNicknameDraft(nickname === "同学" ? "" : nickname); setEditingNickname(true); }}>✎ 修改称呼</button></div><p>系统学习，把每一道题都变成底气</p>{editingNickname && <div className="nickname-editor"><label htmlFor="nickname">希望怎么称呼你？</label><div><input id="nickname" autoFocus maxLength={12} value={nicknameDraft} placeholder="例如：李四、同学" onChange={e => setNicknameDraft(e.target.value)} onKeyDown={e => { if (e.key === "Enter") saveNickname(); if (e.key === "Escape") setEditingNickname(false); }} /><button className="primary" onClick={saveNickname}>保存</button><button className="resume-secondary" onClick={() => setEditingNickname(false)}>取消</button></div></div>}</div><div className="streak"><span>▣</span> 连续学习 <strong>{streak}</strong> 天</div></section>
+        <ExamCountdownCard />
+      </section>
       {session && <section className="resume-card"><div className="resume-icon">↻</div><div><strong>发现未完成的{session.label}</strong><p>上次做到第 {session.cursor + 1} / {session.queue.length} 题，是否继续？</p></div><button className="resume-secondary" onClick={discardSession}>放弃记录</button><button className="primary" onClick={resumePractice}>继续上次练习</button></section>}
       <section className="stats-grid">
         <Stat icon="✓" label="今日完成" value={todayDone} unit="题" />
